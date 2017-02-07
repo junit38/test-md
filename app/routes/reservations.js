@@ -37,8 +37,6 @@ router.post('/', function(req, res, next) {
   		end: new Date(req.body.end),
   	});
 
-  	console.log(reservation);
-
   	if (!reservation.room) {
 		return res.json({
   			err: 'You must enter a room Id.'
@@ -58,48 +56,47 @@ router.post('/', function(req, res, next) {
 			  		})
 				} else if (reservation.end < reservation.start) {
 			  		return res.json({
-			  			err: 'The end date must be after the start time.'
+			  			err: 'The end time must be after the start time.'
 			  		})
 			  	} else if (!(reservation.start - reservation.end)) {
 			  		return res.json({
-			  			err: 'You must book a room for amount of time.'
+			  			err: 'You must book a room for an amount of time.'
 			  		})
 			  	} else if (reservation.start < currentDate) {
 			  		return res.json({
 			  			err: 'You can\'t book a room for earlier date.'
 			  		})
 			  	} else {
+			  		// avoid errors
+			  		reservation.start.setSeconds(0);
+			  		reservation.end.setSeconds(0);
+
 			  		Reservation.find({
 			  			room: reservation.room,
 		  				$or: [
 		  					{ start: { $gte: reservation.start }, end: { $lte: reservation.end } },
 		  					{ start: { $lte: reservation.start }, end: { $gte: reservation.end } },
-		  					{ start: { $gte: reservation.start, $lte: reservation.end }, end: { $gte: reservation.end } },
-		  					{ start: { $lte: reservation.start }, end: { $lte: reservation.end, $gte: reservation.start } },
+		  					{ start: { $gte: reservation.start, $lt: reservation.end }, end: { $gte: reservation.end } },
+		  					{ start: { $lte: reservation.start }, end: { $lte: reservation.end, $gt: reservation.start } },
 		  				]
 			  		}, function(err, reservations) {
 			  			if (err) {
 			  				return res.json(err)
 			  			} else if (reservations && reservations.length) {
-			  				console.log(reservations);
 			  				return res.json({
 			  					err: 'A reservation has already been made for this datetime.'
 			  				})
 			  			} else {
-			  				res.json({
-					  			message: 'Reservation booked succesfully.',
-					  			reservation: reservation
-					  		});
-			  		// 		reservation.save(function(err) {
-							//   	if (err) {
-							//   		res.json(err);
-							//   	} else {
-							//   		res.json({
-							//   			message: 'Reservation booked succesfully.',
-							//   			reservation: reservation
-							//   		});
-							//   	}
-							// })
+			  				reservation.save(function(err) {
+							  	if (err) {
+							  		res.json(err);
+							  	} else {
+							  		res.json({
+							  			message: 'Reservation booked succesfully.',
+							  			reservation: reservation
+							  		});
+							  	}
+							})
 			  			}
 			  		})
 			  	}

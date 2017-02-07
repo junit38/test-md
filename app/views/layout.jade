@@ -2,10 +2,12 @@ doctype html
 html(ng-app='app')
   head
     title= title
+    meta(name="viewport", content="width=device-width, initial-scale=1")
     link(rel='stylesheet', href='/stylesheets/style.css')
     link(rel='stylesheet', href='/bower_components/fullcalendar/dist/fullcalendar.css')
     link(rel='stylesheet', href='/bower_components/angular-material/angular-material.css')
-    link(rel='stylesheet', href='/bower_components/mdPickers/dist/mdPickers.css')
+    link(rel='stylesheet', href='/bower_components/md-datetime/dist/style.css')
+    link(rel='stylesheet', href='https://fonts.googleapis.com/icon?family=Material+Icons')
   body.ng-cloak(layout="column")
     block content
   footer
@@ -17,7 +19,7 @@ html(ng-app='app')
     script(type='text/javascript', src='/bower_components/angular-animate/angular-animate.js')
     script(type='text/javascript', src='/bower_components/angular-aria/angular-aria.js')
     script(type='text/javascript', src='/bower_components/angular-material/angular-material.js')
-    script(type='text/javascript', src='/bower_components/mdPickers/dist/mdPickers.js')
+    script(type='text/javascript', src='/bower_components/md-datetime/dist/main.js')
     script(type='text/javascript', src='/bower_components/moment/min/moment.min.js')
     script(type='text/javascript', src='/bower_components/angular-ui-calendar/src/calendar.js')
     script(type='text/javascript', src='/bower_components/fullcalendar/dist/fullcalendar.min.js')

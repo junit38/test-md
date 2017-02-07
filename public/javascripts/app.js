@@ -46,9 +46,9 @@ app.controller('RoomsCtrl', function($scope, $rootScope, $http, $mdToast) {
     	$rootScope.start = new Date();
     	$rootScope.end = new Date();
 
-    	$rootScope.startDate = new Date();
-    	$rootScope.start = new Date();
-    	$rootScope.end = new Date();
+    	$scope.startDate = new Date();
+    	$scope.start = new Date();
+    	$scope.end = new Date();
 
 		$scope.loading = true;
 
